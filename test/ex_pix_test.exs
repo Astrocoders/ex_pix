@@ -17,9 +17,12 @@ defmodule ExPIXTest do
   describe "when parameters are incorrect" do
     test "should return an error if a parameter is incorrect", %{static_params: static_params} do
       name_limit = Static.max_lengths().merchant_name
-      new_params = Map.replace!(static_params, :merchant_name, String.pad_leading("a", name_limit + 1, "a"))
 
-      assert {:error, "The merchant_name is invalid"} == ExPIX.generate_static_code("random_key", new_params)
+      new_params =
+        Map.replace!(static_params, :merchant_name, String.pad_leading("a", name_limit + 1, "a"))
+
+      assert {:error, "The merchant_name is invalid"} ==
+               ExPIX.generate_static_code("random_key", new_params)
     end
   end
 

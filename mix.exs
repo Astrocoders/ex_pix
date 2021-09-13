@@ -11,7 +11,7 @@ defmodule ExPIX.MixProject do
       name: "ExPIX",
       source_url: "https://github.com/LeoLeiteSC/ex_pix",
       description: "Elixir library to deal with PIX payments",
-      package: package(),
+      package: package()
     ]
   end
 
@@ -37,8 +37,7 @@ defmodule ExPIX.MixProject do
       # Documentation
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
       # QR-Codes
-      {:eqrcode, "~> 0.1.7"},
-      {:crc, "~> 0.10.1"},
+      {:crc, "~> 0.10.2"}
     ]
   end
 end
