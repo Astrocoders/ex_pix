@@ -21,8 +21,9 @@ defmodule ExPIX do
   alias ExPIX.Data.{
     Additional,
     Static,
-    StaticAccount,
+    StaticAccount
   }
+
   alias ExPIX.Code.Builder
 
   @typedoc """
@@ -38,25 +39,26 @@ defmodule ExPIX do
     - `:country_code` - The country code of the operation. If not provided, the code will use the default value defined in the configuration.
   """
   @type static_params :: %{
-    required(:merchant_name) => String.t,
-    required(:merchant_city) => String.t,
-    optional(:amount) => String.t,
-    optional(:payload_indicator) => String.t,
-    optional(:initiation_method) => String.t,
-    optional(:category_code) => String.t,
-    optional(:currency_code) => String.t,
-    optional(:country_code) => String.t,
-    optional(:postal_code) => String.t,
-  }
+          required(:merchant_name) => String.t(),
+          required(:merchant_city) => String.t(),
+          optional(:amount) => String.t(),
+          optional(:payload_indicator) => String.t(),
+          optional(:initiation_method) => String.t(),
+          optional(:category_code) => String.t(),
+          optional(:currency_code) => String.t(),
+          optional(:country_code) => String.t(),
+          optional(:postal_code) => String.t()
+        }
 
   @typedoc """
   Optional parameters to build the notes of the operation. The available parameters are:
     - `:info` - A string with the operation notes.
+    - `:gui` - A string with the gui.
 
   **Important:**
     - The count of characters of the `info` + count of characters of the `gui` + count of characters of the `key` must not exceed the limit of 99 characters. If this limit is exceeded, an error will be returned.
   """
-  @type account_params :: %{optional(:info) => String.t}
+  @type account_params :: %{optional(:info) => String.t(), optional(:gui) => String.t()}
 
   @typedoc """
   Additional parameters to build the code. The available parameters are:
@@ -66,7 +68,7 @@ defmodule ExPIX do
     - Banco Central does not check if the provided ID is unique, so the recomendation here is use an UUID (ideally the v4).
     - The count of characters must not exceed the limit of 99 characters. If this limit is exceeded, an error will be returned.
   """
-  @type additional_params :: %{optional(:txid) => String.t}
+  @type additional_params :: %{optional(:txid) => String.t()}
 
   @doc """
   Generates a static raw code.
@@ -83,7 +85,8 @@ defmodule ExPIX do
     {:ok, "00020101021126370014br.gov.bcb.pix0115email@email.com52040000530398654040.005802BR5914Leonardo Leite6013Florianopolis62070503***6304891C"}
     ```
   """
-  @spec generate_static_code(String.t(), static_params, account_params, additional_params) :: {:ok, String.t()} | {:error, any}
+  @spec generate_static_code(String.t(), static_params, account_params, additional_params) ::
+          {:ok, String.t()} | {:error, any}
   def generate_static_code(key, static_params, account_params \\ %{}, additional_params \\ %{}) do
     account_info = Map.merge(%StaticAccount{}, Map.merge(%{key: key}, account_params))
     additional_info = Map.merge(%Additional{}, additional_params)
